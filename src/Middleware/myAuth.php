@@ -32,7 +32,7 @@ class myAuth
         if(isset($_SERVER['HTTP_TOKEN'])){
 
             $Token = $_SERVER['HTTP_TOKEN'];
-
+            
             // Checking User Session Existed or Not
             if(auth::user()){
                 $user_id = auth::user()->id;

@@ -30,50 +30,25 @@ class User extends Model
 
     }
 
+    public function login($data, &$response){
 
-
-
-
-
-
-    public function login($data){
-
-        // $data->validate([
-        //     'username' => 'required',
-        //     'password' => 'required',
-        // ]);
         if($data['username'] == ''){
-            return response()->json([
-                'message' => 'User Name Field is Required'
-            ]);
+            $response['data'] = "Username field is required";
         }
         elseif($data['password'] == ''){
-            return response()->json([
-                'message' => 'Password Field is Required'
-            ]);
+            $response['data'] = "Password field is required";
         }
-
-
-
-
-
         elseif( $User = User::where('username', $data['username'])->first()){
-
-
-
                 $credentials = array(
                     "username" => $data['username'],
                     "password" => $data['password'],
                 );
 
                 if(Auth::attempt($credentials)) {
-
                     $TokenExist = User::find($User->id)->token;
                     // This filter check token of user already existed , if old Token record found then delete the record and add new token record in SessionToken table
                     if($TokenExist){
-
                         $TokenExist->delete();
-
                         $Token = md5(uniqid(rand(), true));
                         $expiry = Carbon::now()->addDay();
                         $status = 'A';
@@ -90,13 +65,9 @@ class User extends Model
                         $SessionToken->save();
                         // Session::put('auth', auth::user());
 
-                        return response()->json([
-                            'staus' => 1,
-                            'message' => 'logged in',
-                            'token'   => $Token
-
-                        ]);
-
+                        $response['data'] = "Token generated successfully";
+                        $response['token'] = $Token;
+                        $response['success'] = 1;
 
                     }else{
 
@@ -116,34 +87,19 @@ class User extends Model
                         $SessionToken->save();
                         // Session::put('auth', auth::user());
 
-                        return response()->json([
-                            'staus'   => 1,
-                            'message' => 'logged in',
-                            'token'   => $Token,
-                        ]);
+                        $response['data'] = "Token generated successfully";
+                        $response['token'] = $Token;
+                        $response['success'] = 1;
 
                     }
 
-
-
                 }else{
-
-                    return response()->json([
-                        'staus'   => 0,
-                        'message' => 'Invalid Password'
-                    ]);
+                    $response['data'] = "Invalid Password";
                 }
 
         }else{
-
-            return response()->json([
-                'staus'   => 0,
-                'message' => 'Invalid User Name'
-            ]);
+            $response['data'] = "Invalid Username";
         }
-
-
-
     }
 
 

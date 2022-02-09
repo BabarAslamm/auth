@@ -12,3 +12,5 @@ Route::get('/contacts', 'Insyghts\Authentication\Controllers\ContactController@c
 Route::get('/single-contact/{id}', 'Insyghts\Authentication\Controllers\ContactController@single');
 Route::put('/update-contact/{id}', 'Insyghts\Authentication\Controllers\ContactController@update');
 Route::delete('/delete-contact/{id}', 'Insyghts\Authentication\Controllers\ContactController@delete');
+
+Route::post('/add-user', 'Insyghts\Authentication\Controllers\UserController@addUser');

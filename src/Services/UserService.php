@@ -10,10 +10,15 @@ class UserService{
 
     public function login(array $input)
     {
+      $response = [
+        'success' => 0,
+        'data' => 'Invalid username or password',
+      ];
 
       $Contact = new User();
-      return  $result = $this->user->login($input);
+      $this->user->login($input, $response);
 
+      return $response;
     }
 
 
